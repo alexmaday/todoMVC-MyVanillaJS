@@ -41,8 +41,9 @@ jQuery(function ($) {
 	var App = {
 		init: function () {
 			this.todos = util.store('todos-my-vanilla-js');
-			this.todoTemplate = Handlebars.compile($('#todo-template').html());
-			this.footerTemplate = Handlebars.compile($('#footer-template').html());
+			this.todoTemplate = Handlebars.compile(document.getElementById('todo-template').innerHTML);
+			this.footerTemplate = Handlebars.compile(document.getElementById('footer-template').innerHTML);
+
 			this.bindEvents();
 
 			// Routing is the process of determining what code to 
