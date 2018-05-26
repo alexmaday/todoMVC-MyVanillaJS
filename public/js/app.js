@@ -43,7 +43,6 @@ jQuery(function ($) {
 			this.todos = util.store('todos-my-vanilla-js');
 			this.todoTemplate = Handlebars.compile(document.getElementById('todo-template').innerHTML);
 			this.footerTemplate = Handlebars.compile(document.getElementById('footer-template').innerHTML);
-
 			this.bindEvents();
 
 			// Routing is the process of determining what code to 
@@ -58,13 +57,13 @@ jQuery(function ($) {
 		bindEvents: function () {
 			document.getElementById('new-todo').addEventListener('keyup', this.create.bind(this));
 			document.getElementById('toggle-all').addEventListener('change', this.toggleAll.bind(this));
-			$('#footer').on('click', '#clear-completed', this.destroyCompleted.bind(this));
+			document.getElementById('footer').addEventListener('click', this.destroyCompleted.bind(this));
 			$('#todo-list')
-				.on('change', '.toggle', this.toggle.bind(this))
-				.on('dblclick', 'label', this.edit.bind(this))
-				.on('keyup', '.edit', this.editKeyup.bind(this))
-				.on('focusout', '.edit', this.update.bind(this))
-				.on('click', '.destroy', this.destroy.bind(this));
+			.on('change', '.toggle', this.toggle.bind(this))
+			.on('dblclick', 'label', this.edit.bind(this))
+			.on('keyup', '.edit', this.editKeyup.bind(this))
+			.on('focusout', '.edit', this.update.bind(this))
+			.on('click', '.destroy', this.destroy.bind(this));
 		},
 		render: function () {
 			var todos = this.getFilteredTodos();
@@ -118,9 +117,12 @@ jQuery(function ($) {
 			return this.todos;
 		},
 		destroyCompleted: function () {
-			this.todos = this.getActiveTodos();
-			this.filter = 'all';
-			this.render();
+			// catch the bubble
+			if (event.target.matches('button#clear-completed')) {			
+				this.todos = this.getActiveTodos();
+				this.filter = 'all';
+				this.render();
+			}
 		},
 		// accepts an element from inside the #todo-list and
 		// returns the corresponding index in the `todos` array
@@ -197,3 +199,5 @@ jQuery(function ($) {
 
 	App.init();
 });
+
+
