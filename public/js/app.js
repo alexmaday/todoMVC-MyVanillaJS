@@ -60,9 +60,9 @@ jQuery(function ($) {
 			document.getElementById('footer').addEventListener('click', this.destroyCompleted.bind(this));
 			document.getElementById('todo-list').addEventListener('change', this.toggleComplete.bind(this));
 			document.getElementById('todo-list').addEventListener('dblclick', this.edit.bind(this));
+			document.getElementById('todo-list').addEventListener('keyup', this.editKeyup.bind(this));
+			document.getElementById('todo-list').addEventListener('focusout', this.update.bind(this));
 			$('#todo-list')
-				.on('keyup', '.edit', this.editKeyup.bind(this))
-				.on('focusout', '.edit', this.update.bind(this))
 				.on('click', '.destroy', this.destroy.bind(this));
 		},
 		render: function () {
@@ -175,31 +175,35 @@ jQuery(function ($) {
 			}
 		},
 		editKeyup: function (e) {
-			if (e.which === ENTER_KEY) {
-				e.target.blur();
-			}
-
-			if (e.which === ESCAPE_KEY) {
-				$(e.target).data('abort', true).blur();
+			if (e.target.matches('.edit')) {
+				if (e.which === ENTER_KEY) {
+					e.target.blur();
+				}
+	
+				if (e.which === ESCAPE_KEY) {
+					$(e.target).data('abort', true).blur();
+				}
 			}
 		},
 		update: function (e) {
-			var el = e.target;
-			var $el = $(el);
-			var val = $el.val().trim();
-
-			if (!val) {
-				this.destroy(e);
-				return;
+			if (e.target.matches('.edit')) {
+				var el = e.target;
+				var $el = $(el);
+				var val = $el.val().trim();
+	
+				if (!val) {
+					this.destroy(e);
+					return;
+				}
+	
+				if ($el.data('abort')) {
+					$el.data('abort', false);
+				} else {
+					this.todos[this.indexFromEl(el)].title = val;
+				}
+	
+				this.render();
 			}
-
-			if ($el.data('abort')) {
-				$el.data('abort', false);
-			} else {
-				this.todos[this.indexFromEl(el)].title = val;
-			}
-
-			this.render();
 		},
 		destroy: function (e) {
 			this.todos.splice(this.indexFromEl(e.target), 1);
