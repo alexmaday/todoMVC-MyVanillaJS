@@ -58,17 +58,24 @@ jQuery(function ($) {
 			document.getElementById('new-todo').addEventListener('keyup', this.create.bind(this));
 			document.getElementById('toggle-all').addEventListener('change', this.toggleAll.bind(this));
 			document.getElementById('footer').addEventListener('click', this.destroyCompleted.bind(this));
+			document.getElementById('todo-list').addEventListener('change', this.toggleComplete.bind(this));
 			$('#todo-list')
-			.on('change', '.toggle', this.toggle.bind(this))
-			.on('dblclick', 'label', this.edit.bind(this))
-			.on('keyup', '.edit', this.editKeyup.bind(this))
-			.on('focusout', '.edit', this.update.bind(this))
-			.on('click', '.destroy', this.destroy.bind(this));
+				// does class toggle exist in other places, i.e. do I need to delegate or can I directly bind
+				// listen for this class? Yes, passing through events on the #todo-list is the optimal approach
+				// in this case as these toggle checkbox elements come in and out of existence dynamically. If
+				// I handled or created event listeners for each and every new toggle checkbox that was created,
+				// I'd have a lot more coding to do. Instead, the best approach is to delegate the behavior from
+				// the parent manually.
+				// .on('change', '.toggle', this.toggle.bind(this))
+				.on('dblclick', 'label', this.edit.bind(this))
+				.on('keyup', '.edit', this.editKeyup.bind(this))
+				.on('focusout', '.edit', this.update.bind(this))
+				.on('click', '.destroy', this.destroy.bind(this));
 		},
 		render: function () {
 			var todos = this.getFilteredTodos();
 			$('#todo-list').html(this.todoTemplate(todos));
-			$('#main').toggle(todos.length > 0);
+			$('#main').toggle(todos.length > 0);		// This is the jQuery toggle which shows/hides elements
 			$('#toggle-all').prop('checked', this.getActiveTodos().length === 0);
 			this.renderFooter();
 			$('#new-todo').focus();
@@ -155,10 +162,17 @@ jQuery(function ($) {
 
 			this.render();
 		},
-		toggle: function (e) {
-			var i = this.indexFromEl(e.target);
-			this.todos[i].completed = !this.todos[i].completed;
-			this.render();
+		/**
+		 * .toggleComplete() 
+		 * @param: e - event that is being handled
+		 */
+		toggleComplete: function (e) {
+			// begin manually detecting the descendant
+			if (e.target.matches('.toggle-complete')) {
+				var i = this.indexFromEl(e.target);		// position in the todos array
+				this.todos[i].completed = !this.todos[i].completed;
+				this.render();
+			}
 		},
 		edit: function (e) {
 			var $input = $(e.target).closest('li').addClass('editing').find('.edit');
