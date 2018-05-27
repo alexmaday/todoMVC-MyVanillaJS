@@ -62,8 +62,7 @@ jQuery(function ($) {
 			document.getElementById('todo-list').addEventListener('dblclick', this.edit.bind(this));
 			document.getElementById('todo-list').addEventListener('keyup', this.editKeyup.bind(this));
 			document.getElementById('todo-list').addEventListener('focusout', this.update.bind(this));
-			$('#todo-list')
-				.on('click', '.destroy', this.destroy.bind(this));
+			document.getElementById('todo-list').addEventListener('click', this.destroy.bind(this));
 		},
 		render: function () {
 			var todos = this.getFilteredTodos();
@@ -206,8 +205,10 @@ jQuery(function ($) {
 			}
 		},
 		destroy: function (e) {
-			this.todos.splice(this.indexFromEl(e.target), 1);
-			this.render();
+			if (e.target.matches('.destroy')) {
+				this.todos.splice(this.indexFromEl(e.target), 1);
+				this.render();
+			}
 		}
 	};
 
