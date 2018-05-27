@@ -169,9 +169,9 @@ jQuery(function ($) {
 		},
 		edit: function (e) {
 			if (e.target.matches('label')) {
-				// console.log('detect target label');
-				var $input = $(e.target).closest('li').addClass('editing').find('.edit');
-				$input.val($input.val()).focus();
+				var li = e.target.closest('li');
+				li.classList.add('editing');
+				li.querySelector('.edit').focus();
 			}
 		},
 		editKeyup: function (e) {
