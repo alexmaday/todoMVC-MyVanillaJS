@@ -59,15 +59,8 @@ jQuery(function ($) {
 			document.getElementById('toggle-all').addEventListener('change', this.toggleAll.bind(this));
 			document.getElementById('footer').addEventListener('click', this.destroyCompleted.bind(this));
 			document.getElementById('todo-list').addEventListener('change', this.toggleComplete.bind(this));
+			document.getElementById('todo-list').addEventListener('dblclick', this.edit.bind(this));
 			$('#todo-list')
-				// does class toggle exist in other places, i.e. do I need to delegate or can I directly bind
-				// listen for this class? Yes, passing through events on the #todo-list is the optimal approach
-				// in this case as these toggle checkbox elements come in and out of existence dynamically. If
-				// I handled or created event listeners for each and every new toggle checkbox that was created,
-				// I'd have a lot more coding to do. Instead, the best approach is to delegate the behavior from
-				// the parent manually.
-				// .on('change', '.toggle', this.toggle.bind(this))
-				.on('dblclick', 'label', this.edit.bind(this))
 				.on('keyup', '.edit', this.editKeyup.bind(this))
 				.on('focusout', '.edit', this.update.bind(this))
 				.on('click', '.destroy', this.destroy.bind(this));
@@ -175,8 +168,11 @@ jQuery(function ($) {
 			}
 		},
 		edit: function (e) {
-			var $input = $(e.target).closest('li').addClass('editing').find('.edit');
-			$input.val($input.val()).focus();
+			if (e.target.matches('label')) {
+				// console.log('detect target label');
+				var $input = $(e.target).closest('li').addClass('editing').find('.edit');
+				$input.val($input.val()).focus();
+			}
 		},
 		editKeyup: function (e) {
 			if (e.which === ENTER_KEY) {
