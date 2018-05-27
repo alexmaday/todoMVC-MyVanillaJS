@@ -58,11 +58,12 @@ jQuery(function ($) {
 			document.getElementById('new-todo').addEventListener('keyup', this.create.bind(this));
 			document.getElementById('toggle-all').addEventListener('change', this.toggleAll.bind(this));
 			document.getElementById('footer').addEventListener('click', this.destroyCompleted.bind(this));
-			document.getElementById('todo-list').addEventListener('change', this.toggleComplete.bind(this));
-			document.getElementById('todo-list').addEventListener('dblclick', this.edit.bind(this));
-			document.getElementById('todo-list').addEventListener('keyup', this.editKeyup.bind(this));
-			document.getElementById('todo-list').addEventListener('focusout', this.update.bind(this));
-			document.getElementById('todo-list').addEventListener('click', this.destroy.bind(this));
+			var todolist = document.getElementById('todo-list');
+			todolist.addEventListener('change', this.toggleComplete.bind(this));
+			todolist.addEventListener('dblclick', this.edit.bind(this));
+			todolist.addEventListener('keyup', this.editKeyup.bind(this));
+			todolist.addEventListener('focusout', this.update.bind(this));
+			todolist.addEventListener('click', this.destroy.bind(this));
 		},
 		render: function () {
 			var todos = this.getFilteredTodos();
