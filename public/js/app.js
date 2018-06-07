@@ -67,7 +67,7 @@ jQuery(function ($) {
 		},
 		render: function () {
 			var todos = this.getFilteredTodos();
-			$('#todo-list').html(this.todoTemplate(todos));
+			document.getElementById('todo-list').innerHTML = this.todoTemplate(todos);
 			$('#main').toggle(todos.length > 0);		// This is the jQuery toggle which shows/hides elements
 			$('#toggle-all').prop('checked', this.getActiveTodos().length === 0);
 			this.renderFooter();
