@@ -43,3 +43,11 @@ In jQuery, there are three methods that control the visibility of an element(s).
 **display**
 Type: Boolean
 Use `true` to show the element for `false` to hide it
+
+### On Chrome Dev Console
+Any element with an ID can be directly addressed in the console without going through a DOM call.
+>> `main`
+is the same as 
+>> `document.getElementById("main")`
+
+This works when jquery is loaded - does it work without any other libraries?

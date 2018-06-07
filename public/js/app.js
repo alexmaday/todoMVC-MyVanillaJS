@@ -116,9 +116,9 @@ jQuery(function ($) {
 
 			return this.todos;
 		},
-		destroyCompleted: function () {
+		destroyCompleted: function (e) {
 			// catch the bubble
-			if (event.target.matches('button#clear-completed')) {			
+			if (e.target.matches('button#clear-completed')) {			
 				this.todos = this.getActiveTodos();
 				this.filter = 'all';
 				this.render();
