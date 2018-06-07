@@ -58,6 +58,7 @@ jQuery(function ($) {
 			document.getElementById('new-todo').addEventListener('keyup', this.create.bind(this));
 			document.getElementById('toggle-all').addEventListener('change', this.toggleAll.bind(this));
 			document.getElementById('footer').addEventListener('click', this.destroyCompleted.bind(this));
+
 			var todolist = document.getElementById('todo-list');
 			todolist.addEventListener('change', this.toggleComplete.bind(this));
 			todolist.addEventListener('dblclick', this.edit.bind(this));
@@ -68,7 +69,13 @@ jQuery(function ($) {
 		render: function () {
 			var todos = this.getFilteredTodos();
 			document.getElementById('todo-list').innerHTML = this.todoTemplate(todos);
-			$('#main').toggle(todos.length > 0);		// This is the jQuery toggle which shows/hides elements
+
+			var main = document.getElementById("main");
+			if (todos.length > 0) {
+				main.style.display = "block";
+			} else {
+				main.style.display = "none";
+			}
 			$('#toggle-all').prop('checked', this.getActiveTodos().length === 0);
 			this.renderFooter();
 			$('#new-todo').focus();
