@@ -71,7 +71,7 @@ jQuery(function ($) {
 			document.getElementById('todo-list').innerHTML = this.todoTemplate(todos);
 			document.getElementById("main").style.display = (todos.length > 0) ? "block" : "none";
 			document.getElementById("toggle-all").checked = this.getActiveTodos().length === 0;
-			
+
 			this.renderFooter();
 			$('#new-todo').focus();
 			util.store('todos-my-vanilla-js', this.todos);
@@ -86,7 +86,9 @@ jQuery(function ($) {
 				filter: this.filter
 			});
 
-			$('#footer').toggle(todoCount > 0).html(template);
+			var footer = document.getElementById("footer")
+			footer.style.display = (todoCount > 0) ? "block" : "none";
+			footer.innerHTML = template;
 		},
 		toggleAll: function (e) {
 			var isChecked = $(e.target).prop('checked');
