@@ -132,7 +132,7 @@ document.addEventListener("DOMContentLoaded", function() {
 		// accepts an element from inside the #todo-list and
 		// returns the corresponding index in the `todos` array
 		indexFromEl: function (el) {
-			var id = $(el).closest('li').data('id');    // id is uuid
+			var id = el.closest('li').dataset.id;    // id is uuid
 			var todos = this.todos;
 			var i = todos.length;
 
