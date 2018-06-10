@@ -74,7 +74,7 @@ document.addEventListener("DOMContentLoaded", function() {
 			document.getElementById("toggle-all").checked = this.getActiveTodos().length === 0;
 
 			this.renderFooter();
-			$('#new-todo').focus();
+			document.getElementById("new-todo").focus();
 			util.store('todos-my-vanilla-js', this.todos);
 		},
 		renderFooter: function () {
