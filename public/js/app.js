@@ -1,5 +1,6 @@
-/*global jQuery, Handlebars, Router */
-jQuery(function ($) {
+/*global Handlebars, Router */
+document.addEventListener("DOMContentLoaded", function() {
+
 	'use strict';
 
 	Handlebars.registerHelper('eq', function (a, b, options) {
@@ -219,5 +220,3 @@ jQuery(function ($) {
 
 	App.init();
 });
-
-
