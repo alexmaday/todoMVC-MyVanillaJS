@@ -143,8 +143,7 @@ document.addEventListener("DOMContentLoaded", function() {
 			}
 		},
 		create: function (e) {
-			var $input = $(e.target);
-			var val = $input.val().trim();
+			var val = e.target.value.trim();
 
 			if (e.which !== ENTER_KEY || !val) {
 				return;
@@ -156,8 +155,7 @@ document.addEventListener("DOMContentLoaded", function() {
 				completed: false
 			});
 
-			$input.val('');
-
+			e.target.value = "";
 			this.render();
 		},
 		/**
