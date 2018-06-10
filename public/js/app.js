@@ -92,7 +92,7 @@ document.addEventListener("DOMContentLoaded", function() {
 			footer.innerHTML = template;
 		},
 		toggleAll: function (e) {
-			var isChecked = $(e.target).prop('checked');
+			var isChecked = e.target.checked;
 
 			this.todos.forEach(function (todo) {
 				todo.completed = isChecked;
