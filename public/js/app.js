@@ -8,7 +8,6 @@ document.addEventListener("DOMContentLoaded", function() {
 	});
 
 	var ENTER_KEY = 13;
-	var ESCAPE_KEY = 27;
 
 	var util = {
 		uuid: function () {
@@ -122,7 +121,6 @@ document.addEventListener("DOMContentLoaded", function() {
 			return this.todos;
 		},
 		destroyCompleted: function (e) {
-			// catch the bubble
 			if (e.target.matches('button#clear-completed')) {			
 				this.todos = this.getActiveTodos();
 				this.filter = 'all';
@@ -160,7 +158,6 @@ document.addEventListener("DOMContentLoaded", function() {
 			this.render();
 		},
 		toggleComplete: function (e) {
-			// begin manually detecting the descendant
 			if (e.target.matches('.toggle-complete')) {
 				var i = this.indexFromEl(e.target);		// position in the todos array
 				this.todos[i].completed = !this.todos[i].completed;
@@ -172,44 +169,27 @@ document.addEventListener("DOMContentLoaded", function() {
 				var li = e.target.closest('li');
 				li.classList.add('editing');
 				li.querySelector('.edit').focus();
-				// what happens to the label element? Is it explicitly hidden? Is it overlapped by it's sibling input?
-				// Yes, the enclosing div.view which holds the label, now has a css rule that sets it's display to none.
-				// #todo-list li.editing .view {display: none;}
 			}
 		},
-		// called on keyup inside ul#todo-list
 		editKeyup: function (e) {
 			if (e.target.matches('.edit')) {
 				if (e.which === ENTER_KEY) {
 					e.target.blur();	// triggers blur event - handled by .update()
 				}
-				// what is the intention here?
-				// When a user hits Escape
-					// set the dataset object property abort to true -> dataset.abort = true
-					// triggers a blur event - see .update()
-				if (e.key === "Escape") {
-					$(e.target).data('abort', true).blur();
-				}
 			}
 		},
-		// called on focusout for ul#todo-list
+		// called on focusout for ul#todo-list and blur triggers a focusout
 		update: function (e) {
 			if (e.target.matches('.edit')) {
 				var el = e.target;
-				var $el = $(el);
-				var val = $el.val().trim();
+				var val = el.value.trim();
 	
 				if (!val) {
 					this.destroy(e);
 					return;
 				}
-	
-				if ($el.data('abort')) {
-					$el.data('abort', false);
-				} else {
-					this.todos[this.indexFromEl(el)].title = val;
-				}
-	
+				
+			  this.todos[this.indexFromEl(el)].title = val;
 				this.render();
 			}
 		},
