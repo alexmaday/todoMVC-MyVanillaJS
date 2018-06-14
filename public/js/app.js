@@ -62,13 +62,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
 			var todolist = document.getElementById('todo-list');
 			todolist.addEventListener('change', this.toggleComplete.bind(this));
-			todolist.addEventListener('dblclick', this.edit.bind(this));
-			todolist.addEventListener('keyup', this.editKeyup.bind(this));
+			todolist.addEventListener('dblclick', this.edit.bind(this));	// begin editing a todo
+			todolist.addEventListener('keyup', this.editKeyup.bind(this));// 
 			todolist.addEventListener('focusout', this.update.bind(this));
 			todolist.addEventListener('click', this.destroy.bind(this));
 		},
 		render: function () {
-			var todos = this.getFilteredTodos();
+			var todos = this.getFilteredTodos(); // gets only the todos that should be displayed given the current filter context chosen from within the footer
 			document.getElementById('todo-list').innerHTML = this.todoTemplate(todos);
 			document.getElementById("main").style.display = (todos.length > 0) ? "block" : "none";
 			document.getElementById("toggle-all").checked = this.getActiveTodos().length === 0;
@@ -142,6 +142,7 @@ document.addEventListener("DOMContentLoaded", function() {
 				}
 			}
 		},
+		// called on keyup from input#new-todo
 		create: function (e) {
 			var val = e.target.value.trim();
 
@@ -158,10 +159,6 @@ document.addEventListener("DOMContentLoaded", function() {
 			e.target.value = "";
 			this.render();
 		},
-		/**
-		 * .toggleComplete() 
-		 * @param: e - event that is being handled
-		 */
 		toggleComplete: function (e) {
 			// begin manually detecting the descendant
 			if (e.target.matches('.toggle-complete')) {
@@ -175,19 +172,27 @@ document.addEventListener("DOMContentLoaded", function() {
 				var li = e.target.closest('li');
 				li.classList.add('editing');
 				li.querySelector('.edit').focus();
+				// what happens to the label element? Is it explicitly hidden? Is it overlapped by it's sibling input?
+				// Yes, the enclosing div.view which holds the label, now has a css rule that sets it's display to none.
+				// #todo-list li.editing .view {display: none;}
 			}
 		},
+		// called on keyup inside ul#todo-list
 		editKeyup: function (e) {
 			if (e.target.matches('.edit')) {
 				if (e.which === ENTER_KEY) {
-					e.target.blur();
+					e.target.blur();	// triggers blur event - handled by .update()
 				}
-	
-				if (e.which === ESCAPE_KEY) {
+				// what is the intention here?
+				// When a user hits Escape
+					// set the dataset object property abort to true -> dataset.abort = true
+					// triggers a blur event - see .update()
+				if (e.key === "Escape") {
 					$(e.target).data('abort', true).blur();
 				}
 			}
 		},
+		// called on focusout for ul#todo-list
 		update: function (e) {
 			if (e.target.matches('.edit')) {
 				var el = e.target;

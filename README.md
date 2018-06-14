@@ -51,3 +51,34 @@ is the same as
 >> `document.getElementById("main")`
 
 This works when jquery is loaded - does it work without any other libraries?
+
+### On Bubbling
+What is 'bubbling'? I know that it is related to how events are handled. 
+Bubbling is one of two mechanisms (the other being capturing) that determine the order in which
+to run multiple handlers on the same event. For instance, if we have a video element inside a
+div element:
+
+```html
+<div>
+  <video src="something.mp4"></video>
+</div>
+```
+
+And they both have their own event handlers for the click event:
+
+```javascript
+document.querySelector('div').onclick(function(ev) {
+  console.log('div responding to click');
+});
+document.querySelector('video').onclick(function(ev) {
+  console.log('video responding to click');
+});
+```
+Which handler runs first? The chicken or the egg? The outside or the inside?
+
+By default, browsers go from the inner to the outer and is referred to as bubbling.
+If you want to run handlers from the outside in, you can use capturing by invoking
+`ev.stopPropagation()` on the event.
+
+Also, bubbling & capture go from all the way from inside to the outermost ancestor 
+html, and from html to all descendants that are listening for that event.
